@@ -1,24 +1,26 @@
-package edu.praktikum.samokat;
+package test.pack;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.After;
 import org.openqa.selenium.JavascriptExecutor;
+import page.pack.MainPage;
+
 import static org.junit.Assert.*;
 import java.util.concurrent.TimeUnit;
 
 
 @RunWith(Parameterized.class)
-public class DropdownList {
-    WebDriver driver = new FirefoxDriver();
+public class DropdownListTest {
+    private WebDriver driver;
     private final String question;
     private final String answer;
 
-    public DropdownList(String question, String answer) {
+    public DropdownListTest(String question, String answer) {
         this.question = question;
         this.answer = answer;
     }
@@ -36,22 +38,30 @@ public class DropdownList {
         };
     }
 
+    @Before
+    public void setup() {
+        driver = new FirefoxDriver();
+    }
+
+
     @Test
     public void testClass() {
 
-        driver.get(MainPage.mainUrl);
+        MainPage mainPage = new MainPage(driver);
 
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(MainPagelocators.accordeonList));
+        driver.get(mainPage.getMainUrl());
 
-        driver.findElement(By.xpath(".//*[text()='" + question + "']")).click();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", mainPage.getAccordeonList());
+
+        mainPage.findAndClickQuestion(question);
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        assertEquals("Текст не совпадает", answer, driver.findElement(By.id(driver.findElement(By.xpath(".//*[text()='" + question + "']")).getAttribute("aria-controls"))).getText());
+        assertEquals("Текст не совпадает", answer, mainPage.findAnswerText(question));
 
     }
 
     @After
     public void teardown() {
-        driver.quit();
+        //driver.quit();
     }
 
 }
