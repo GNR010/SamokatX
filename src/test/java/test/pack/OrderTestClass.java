@@ -37,7 +37,7 @@ public class OrderTestClass {
 
         driver.get(mainPage.getMainUrl());
 
-        orderPage.getOrderTopButton(driver).click();
+        mainPage.getOrderTopButton(driver).click();
         orderPage.waitForLoad();
 
         orderPage.findAndSendKeys(orderPage.getNameField(), OrderTestData.testDataTop[0]);
@@ -70,9 +70,9 @@ public class OrderTestClass {
         OrderPage orderPage = new OrderPage(driver);
 
         driver.get(mainPage.getMainUrl());
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", orderPage.getOrderBottomButton(driver));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", mainPage.getOrderBottomButton(driver));
 
-        orderPage.getOrderBottomButton(driver).click();
+        mainPage.getOrderBottomButton(driver).click();
         orderPage.waitForLoad();
 
         orderPage.findAndSendKeys(orderPage.getNameField(), OrderTestData.testDataBottom[0]);
